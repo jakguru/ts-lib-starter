@@ -60,6 +60,11 @@ export default defineConfig(async () => {
       },
       emptyOutDir: false,
     },
+    resolve: {
+      alias: {
+        [LIB_NAME]: resolve(BASE_DIR, "src"),
+      },
+    },
     define: {},
   } as UserConfig;
 });

@@ -13,7 +13,7 @@
     "sourceRoot": "/",
     "allowSyntheticDefaultImports": true,
     /* Bundler mode */
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -24,6 +24,17 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@example/lib": [
+        "./src"
+      ],
+      "@example/lib/*": [
+        "./src/*"
+      ],
+    }
   },
   "include": [
     "src",
