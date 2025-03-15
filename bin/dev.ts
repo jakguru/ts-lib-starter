@@ -55,23 +55,7 @@ const doStart = async () => {
   }
   abortController = new AbortController();
   if (!abortController.signal.aborted) {
-    await execa("npx", ["rimraf", "dist"], {
-      cwd,
-      cancelSignal: abortController.signal,
-      stdio: "inherit",
-      reject: false,
-    });
-  }
-  if (!abortController.signal.aborted) {
-    await execa("npx", ["vite", "build"], {
-      cwd,
-      cancelSignal: abortController.signal,
-      stdio: "inherit",
-      reject: false,
-    });
-  }
-  if (!abortController.signal.aborted) {
-    await execa("npx", ["jiti", "bin/package"], {
+    await execa("npm", ["run", "generate"], {
       cwd,
       cancelSignal: abortController.signal,
       stdio: "inherit",
