@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import { readFile } from "fs/promises";
 import { getEntries } from "./bin/utils";
-import { default as dts } from "vite-plugin-dts";
 import type { UserConfig } from "vite";
 
 const LIB_NAME = "@example/lib";
@@ -31,14 +30,7 @@ export default defineConfig(async () => {
   }
   const external = Array.from(externals).filter((ext) => !nonExternal.has(ext));
   return {
-    plugins: [
-      dts({
-        root: BASE_DIR,
-        entryRoot: SRC_DIR,
-        include: ["src/**/*.ts"],
-        exclude: ["src/**/*.d.ts"],
-      }),
-    ],
+    plugins: [],
     build: {
       sourcemap: true,
       minify: true,

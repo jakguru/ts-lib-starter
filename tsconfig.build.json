@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["**/src/**/*.ts"],
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outDir": "./types-temp",
+    "noEmit": false
+  }
+}
