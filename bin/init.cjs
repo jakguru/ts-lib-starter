@@ -110,7 +110,8 @@ const checkNodeVersion = () => {
 
     // Move the extracted directory to the destination
     child_process.execSync(`mv ${EXTRACT_DIR}/* ${destinationDir}`);
-    child_process.execSync(`mv ${EXTRACT_DIR}/.* ${destinationDir}`);
+    child_process.execSync(`mv ${EXTRACT_DIR}/.vscode ${destinationDir}`);
+    child_process.execSync(`mv ${EXTRACT_DIR}/.gitignore ${destinationDir}`);
     console.log(`Moved extracted files to ${destinationDir}.`);
 
     // Ask for the preferred package manager
@@ -146,6 +147,7 @@ const checkNodeVersion = () => {
     fs.rmSync(ZIP_FILE);
     fs.rmSync(EXTRACT_DIR, { recursive: true, force: true });
     fs.rmSync(path.join(destinationDir, "bin", "init.cjs"));
+    fs.rmSync(path.join(destinationDir, "bin", "init.sh"));
     fs.rmSync(path.join(destinationDir, "README.md"));
     fs.rmSync(path.join(destinationDir, "LICENSE.md"));
     console.log("Project setup complete. Cleaned up the zip file.");
