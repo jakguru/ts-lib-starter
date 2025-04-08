@@ -24,9 +24,11 @@ readFile(packageJsonPath, "utf-8").then(async (packageJson) => {
   if (!parsedPackageJson.dependencies) {
     parsedPackageJson.dependencies = {};
   }
-  parsedPackageJson.nonExternal.forEach((mod: string) => {
-    delete parsedPackageJson.dependencies[mod];
-  });
+  if (parsedPackageJson.nonExternal) {
+    parsedPackageJson.nonExternal.forEach((mod: string) => {
+      delete parsedPackageJson.dependencies[mod];
+    });
+  }
   delete parsedPackageJson.devDependencies;
   delete parsedPackageJson.scripts;
   const entries = await getEntries(SRC_DIR, parsedPackageJson.name);
