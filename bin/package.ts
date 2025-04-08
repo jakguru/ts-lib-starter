@@ -1,4 +1,5 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile, writeFile, copyFile } from "fs/promises";
+import { existsSync } from "fs";
 import { resolve } from "path";
 import { getEntries } from "./utils";
 
@@ -7,12 +8,25 @@ const SRC_DIR = resolve(BASE_DIR, "src");
 const packageJsonPath = resolve(BASE_DIR, "package.json");
 const destPackageJsonPath = resolve(BASE_DIR, "dist/package.json");
 
+const srcReadmePath = resolve(BASE_DIR, "README.md");
+const destReadmePath = resolve(BASE_DIR, "dist/README.md");
+const srcLicensePath = resolve(BASE_DIR, "LICENSE.md");
+const destLicensePath = resolve(BASE_DIR, "dist/LICENSE.md");
+
+const doCopyFile = async (src: string, dest: string) => {
+  if (!existsSync(src)) return;
+  return await copyFile(src, dest);
+};
+
 readFile(packageJsonPath, "utf-8").then(async (packageJson) => {
   const parsedPackageJson = JSON.parse(packageJson);
   parsedPackageJson.type = "module";
   if (!parsedPackageJson.dependencies) {
     parsedPackageJson.dependencies = {};
   }
+  parsedPackageJson.nonExternal.forEach((mod: string) => {
+    delete parsedPackageJson.dependencies[mod];
+  });
   delete parsedPackageJson.devDependencies;
   delete parsedPackageJson.scripts;
   const entries = await getEntries(SRC_DIR, parsedPackageJson.name);
@@ -43,8 +57,11 @@ readFile(packageJsonPath, "utf-8").then(async (packageJson) => {
   });
   parsedPackageJson.exports = exports;
   delete parsedPackageJson.files;
-  await writeFile(
-    destPackageJsonPath,
-    JSON.stringify(parsedPackageJson, null, 2),
-  );
+  delete parsedPackageJson.resolutions;
+  delete parsedPackageJson.nonExternal;
+  await Promise.all([
+    writeFile(destPackageJsonPath, JSON.stringify(parsedPackageJson, null, 2)),
+    doCopyFile(srcReadmePath, destReadmePath),
+    doCopyFile(srcLicensePath, destLicensePath),
+  ]);
 });

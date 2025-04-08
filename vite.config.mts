@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 import { readFile } from "fs/promises";
 import { getEntries } from "./bin/utils";
@@ -16,7 +16,13 @@ const externals = new Set<string>([
 ]);
 const nonExternal = new Set<string>([]);
 
-export default defineConfig(async () => {
+export default defineConfig(async ({ mode }) => {
+  // Load app-level env vars to node-level env vars.
+  process.env = {
+    ...process.env,
+    ...loadEnv(mode, process.cwd(), ["VITE_", "CI", "CI_", "GITLAB_"]),
+  };
+
   const entries = await getEntries(SRC_DIR, LIB_NAME);
   const rawPackageJson = await readFile(
     resolve(BASE_DIR, "package.json"),
@@ -26,6 +32,11 @@ export default defineConfig(async () => {
   if (packageJson.dependencies) {
     Object.keys(packageJson.dependencies).forEach((dep) => {
       externals.add(dep);
+    });
+  }
+  if (packageJson.nonExternal) {
+    packageJson.nonExternal.forEach((mod: string) => {
+      nonExternal.add(mod);
     });
   }
   const external = Array.from(externals).filter((ext) => !nonExternal.has(ext));

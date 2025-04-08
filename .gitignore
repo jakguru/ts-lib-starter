@@ -5,3 +5,7 @@ node_modules/
 .gitlab-ci-local
 .gitlab-ci-local-variables.yml
 .gitlab-ci-local-env
+docs/.vitepress/dist
+docs/.vitepress/cache
+docs/api/*
+!docs/api/.gitkeep

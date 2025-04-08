@@ -1,0 +1,29 @@
+{
+  "text": "API",
+  "items": [
+    {
+      "text": "@example/lib",
+      "link": "/api/@example/lib/index"
+    },
+    {
+      "text": "@example/lib/test",
+      "items": [
+        {
+          "text": "Package Exports",
+          "link": "/api/@example/lib/test/index"
+        },
+        {
+          "text": "Variables",
+          "items": [
+            {
+              "text": "test",
+              "link": "/api/@example/lib/test/variables/test"
+            }
+          ],
+          "collapsed": true
+        }
+      ],
+      "collapsed": true
+    }
+  ]
+}

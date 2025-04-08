@@ -110,6 +110,7 @@ const checkNodeVersion = () => {
 
     // Move the extracted directory to the destination
     child_process.execSync(`mv ${EXTRACT_DIR}/* ${destinationDir}`);
+    child_process.execSync(`mv ${EXTRACT_DIR}/.* ${destinationDir}`);
     console.log(`Moved extracted files to ${destinationDir}.`);
 
     // Ask for the preferred package manager
