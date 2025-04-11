@@ -11,7 +11,7 @@ const color = require("cli-color");
 const packageJsonPath = resolve(cwd, "package.json");
 
 const nodemonConfig = {
-  watch: ["src/**/*", "package.json", "vite.config.mts"],
+  watch: ["src/**/*", "package.json", "vite.config.mts", "tsconfig.json"],
   ext: "ts,json,env,scss,vue,md,yml",
   ignore: ["node_modules"],
   exec: "npx jiti bin/noop.ts",
@@ -55,6 +55,12 @@ readFile(packageJsonPath, "utf-8")
       .on("start", function () {
         console.log(color.green("Documentation Process has started"));
         makeApiDocs(cwd, parsedPackageJson.name);
+        // if (abortController) {
+        //   abortController.abort();
+        // }
+        // if (subprocess) {
+        //   subprocess.kill();
+        // }
         // abortController = new AbortController();
         // subprocess = execa("npm", ["run", "docs:dev"], {
         //   cwd,

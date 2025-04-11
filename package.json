@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "description": "An example library",
   "scripts": {
+    "customize": "npx jiti bin/customize.ts",
     "dev": "npx jiti bin/dev.ts",
     "package": "npx jiti bin/package.ts",
-    "build": "npx rimraf dist && vite build && npx jiti bin/type.ts",
-    "generate": "npx rimraf dist && vite build && npx jiti bin/type.ts && npx jiti bin/package.ts",
+    "build": "npx rimraf dist && vite build && npx jiti bin/type.ts && npx jiti bin/stubs.ts",
+    "generate": "npx rimraf dist && vite build && npx jiti bin/type.ts && npx jiti bin/stubs.ts && npx jiti bin/package.ts",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,6 +20,7 @@
   "author": "Jak Guru <jak@jak.guru>",
   "license": "MIT",
   "devDependencies": {
+    "@inquirer/prompts": "^7.4.1",
     "@types/cli-color": "^2.0.6",
     "@types/command-line-args": "^5.2.3",
     "@types/command-line-usage": "^5.0.4",

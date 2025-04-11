@@ -151,6 +151,17 @@ const checkNodeVersion = () => {
     fs.rmSync(path.join(destinationDir, "README.md"));
     fs.rmSync(path.join(destinationDir, "LICENSE.md"));
     console.log("Project setup complete. Cleaned up the zip file.");
+    switch (pm) {
+      case "npm":
+        console.log("Run 'npm run customize' to customize the name and description globally.");
+        break;
+      case "yarn":
+        console.log("Run 'yarn customize' to customize the name and description globally.");
+        break;
+      case "pnpm":
+        console.log("Run 'pnpm customize' to customize the name and description globally.");
+        break;
+    }
   } catch (err) {
     console.error(`Error: ${err.message}`);
     process.exit(1);
