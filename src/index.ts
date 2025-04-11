@@ -2,4 +2,4 @@
  * @module @example/lib
  */
 
-export * from "./test";
+export * from './test'
