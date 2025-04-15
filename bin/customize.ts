@@ -38,7 +38,12 @@ process
     cleanup().finally(() => process.exit(255))
   })
 
-const getCustomizedAttributes = async (name: string, description: string) => {
+const getCustomizedAttributes = async (
+  name: string,
+  description: string,
+  author: string,
+  copyright: string
+) => {
   const customName = await input({
     message: 'Enter an updated name for the library, including the namespace',
     default: name,
@@ -60,7 +65,25 @@ const getCustomizedAttributes = async (name: string, description: string) => {
       return true
     },
   })
-  return { customName, customDescription }
+  const customAuthor = await input({
+    message: 'Enter an updated author for the library',
+    default: author,
+    required: true,
+    validate: (inpt) => {
+      if (!inpt) return 'Please enter an author'
+      return true
+    },
+  })
+  const customCopyright = await input({
+    message: 'Enter an updated copyright for the library',
+    default: copyright,
+    required: true,
+    validate: (inpt) => {
+      if (!inpt) return 'Please enter a copyright'
+      return true
+    },
+  })
+  return { customName, customDescription, customAuthor, customCopyright }
 }
 
 const getUpdatedContent = (source: string, from: string, to: string) => {
@@ -83,7 +106,7 @@ const packagePath = join(cwd, 'package.json')
 readFile(packagePath, 'utf-8')
   .then(async (raw) => {
     const pkg = JSON.parse(raw)
-    const { name, description } = pkg
+    const { name, description, author, copyright } = pkg
     console.log(
       color.yellow(
         'Please wait while the index of files which will need to be customized is built...'
@@ -132,8 +155,10 @@ readFile(packagePath, 'utf-8')
     let approved = false
     let customName: string | undefined
     let customDescription: string | undefined
+    let customAuthor: string | undefined
+    let customCopyright: string | undefined
     while (!approved) {
-      const atts = await getCustomizedAttributes(name, description)
+      const atts = await getCustomizedAttributes(name, description, author, copyright)
       console.log(
         color.yellow('------------------------------------------------------------------')
       )
@@ -150,6 +175,18 @@ readFile(packagePath, 'utf-8')
         color.cyan(atts.customDescription)
       )
       console.log(
+        color.yellow('Author:'),
+        color.cyan(author),
+        color.yellow('->'),
+        color.cyan(atts.customAuthor)
+      )
+      console.log(
+        color.yellow('Copyright:'),
+        color.cyan(copyright),
+        color.yellow('->'),
+        color.cyan(atts.customCopyright)
+      )
+      console.log(
         color.yellow('------------------------------------------------------------------')
       )
       approved = await confirm({
@@ -159,12 +196,16 @@ readFile(packagePath, 'utf-8')
       if (approved) {
         customName = atts.customName
         customDescription = atts.customDescription
+        customAuthor = atts.customAuthor
+        customCopyright = atts.customCopyright
       }
     }
     const toCustomize = Array.from(index).filter((f) => !f.endsWith('package.json'))
     const updatedPackageJson = { ...pkg }
     updatedPackageJson.name = customName
     updatedPackageJson.description = customDescription
+    updatedPackageJson.author = customAuthor
+    updatedPackageJson.copyright = customCopyright
     console.log(color.yellow('Updating'), color.cyan('package.json'))
     await writeFile(packagePath, JSON.stringify(updatedPackageJson, null, 2), 'utf-8')
     console.log(color.green('Updated'), color.cyan('package.json'))
@@ -174,6 +215,8 @@ readFile(packagePath, 'utf-8')
       let updated = original
       updated = getUpdatedContent(updated, name, customName!)
       updated = getUpdatedContent(updated, description, customDescription!)
+      updated = getUpdatedContent(updated, author, customAuthor!)
+      updated = getUpdatedContent(updated, copyright, customCopyright!)
       await writeFile(file, updated, 'utf-8')
       console.log(color.green('Updated'), color.cyan(file))
     }

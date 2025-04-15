@@ -39,6 +39,8 @@
   "include": [
     "src",
     "bin",
-    "vite.config.mts"
+    "tests",
+    "vite.config.mts",
+    "./vite-env.d.ts",
   ],
 }

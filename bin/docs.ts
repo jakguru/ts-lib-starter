@@ -1,16 +1,18 @@
 /* eslint-disable @unicorn/prefer-module */
 
-// import { execa } from "execa";
-import { resolve } from 'node:path'
+import { execa } from 'execa'
+import { resolve, join } from 'node:path'
 import { readFile } from 'node:fs/promises'
+import { watch } from 'node:fs'
 import { makeApiDocs } from './utils/'
-import type { Subprocess } from 'execa'
+import type { ResultPromise } from 'execa'
 
 const cwd = resolve(__dirname, '..')
 const nodemon = require('nodemon')
 const color = require('cli-color')
 
 const packageJsonPath = resolve(cwd, 'package.json')
+const docsSidebarJsonPath = join(cwd, 'docs', '.vitepress', 'sidebar.json')
 
 const nodemonConfig = {
   watch: ['src/**/*', 'package.json', 'vite.config.mts', 'tsconfig.json'],
@@ -20,15 +22,16 @@ const nodemonConfig = {
   delay: '2500',
 }
 
-let subprocess: Subprocess | undefined
-let abortController: AbortController | undefined
+let subprocess: ResultPromise | undefined
+const abortController: AbortController = new AbortController()
 
 const cleanup = async () => {
+  console.log(color.yellow('Cleaning up...'))
+  abortController.abort()
   if (subprocess) {
-    await subprocess.kill()
-  }
-  if (abortController) {
-    abortController.abort()
+    subprocess.kill('SIGINT')
+    await subprocess
+    subprocess = undefined
   }
 }
 
@@ -49,27 +52,38 @@ process
 
 nodemon(nodemonConfig)
 let timeout: NodeJS.Timeout | undefined
+let devDocsTimeout: NodeJS.Timeout | undefined
+
+const startDevDocs = () => {
+  subprocess = execa('npm', ['run', 'docs:dev'], {
+    cwd,
+    cancelSignal: abortController.signal,
+    stdio: 'overlapped',
+    reject: false,
+  })
+  subprocess.stdout?.pipe(process.stdout)
+  subprocess.stderr?.pipe(process.stderr)
+}
+
+const restartDevDocs = async () => {
+  if (subprocess) {
+    console.log(color.yellow('Stopping DevDocs Process'))
+    subprocess.kill('SIGINT')
+    await subprocess
+    subprocess = undefined
+  }
+  console.log(color.cyan('Starting new DevDocs Process'))
+  startDevDocs()
+}
 
 readFile(packageJsonPath, 'utf-8')
   .then(async (packageJson) => {
     const parsedPackageJson = JSON.parse(packageJson)
+    startDevDocs()
     nodemon
       .on('start', function () {
         console.log(color.green('Documentation Process has started'))
         makeApiDocs(cwd, parsedPackageJson.name)
-        // if (abortController) {
-        //   abortController.abort();
-        // }
-        // if (subprocess) {
-        //   subprocess.kill();
-        // }
-        // abortController = new AbortController();
-        // subprocess = execa("npm", ["run", "docs:dev"], {
-        //   cwd,
-        //   cancelSignal: abortController.signal,
-        //   stdio: "inherit",
-        //   reject: false,
-        // });
       })
       .on('quit', function () {
         console.log(color.red('Documentation Process has quit'))
@@ -80,5 +94,9 @@ readFile(packageJsonPath, 'utf-8')
         clearTimeout(timeout)
         timeout = setTimeout(() => makeApiDocs(cwd, parsedPackageJson.name), 1000)
       })
+    watch(docsSidebarJsonPath, { signal: abortController.signal }, () => {
+      clearTimeout(devDocsTimeout)
+      devDocsTimeout = setTimeout(restartDevDocs, 1000)
+    })
   })
   .catch((err) => console.warn(color.red(err.message)))

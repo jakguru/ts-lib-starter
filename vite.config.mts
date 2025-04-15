@@ -71,8 +71,30 @@ export default defineConfig(async ({ mode }) => {
     resolve: {
       alias: {
         [LIB_NAME]: resolve(BASE_DIR, 'src'),
+        '@': resolve(BASE_DIR, 'src'),
       },
     },
-    define: {},
+    define: {
+      __VERSION__: JSON.stringify(packageJson.version),
+    },
+    test: {
+      dangerouslyIgnoreUnhandledErrors: true,
+      reporters: process.env.CI ? ['default', 'junit'] : ['default'],
+      outputFile: {
+        junit: resolve(BASE_DIR, 'junit.xml'),
+      },
+      typecheck: {
+        enabled: true,
+      },
+      testTimeout: 60_000,
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/cypress/**',
+        '**/.{idea,git,cache,output,temp}/**',
+        '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
+        '**/.gitlab-ci-local/**',
+      ],
+    },
   } as UserConfig
 })

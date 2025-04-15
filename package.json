@@ -5,12 +5,13 @@
   "scripts": {
     "customize": "npx jiti bin/customize.ts",
     "dev": "npx jiti bin/dev.ts",
+    "doc": "npx jiti bin/docs.ts",
     "package": "npx jiti bin/package.ts",
     "build": "npx rimraf dist && vite build && npx jiti bin/type.ts && npx jiti bin/stubs.ts",
     "generate": "npx rimraf dist && vite build && npx jiti bin/type.ts && npx jiti bin/stubs.ts && npx jiti bin/package.ts",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
@@ -18,6 +19,7 @@
   },
   "keywords": [],
   "author": "Jak Guru <jak@jak.guru>",
+  "copyright": "© 2025-present Jak Guru LLC",
   "license": "MIT",
   "devDependencies": {
     "@inquirer/prompts": "^7.4.1",
@@ -44,6 +46,7 @@
     "typescript-eslint": "^8.4.0",
     "vite": "^5.4.3",
     "vitepress": "^1.6.3",
+    "vitest": "^3.1.1",
     "vue": "^3.5.13"
   },
   "files": [
