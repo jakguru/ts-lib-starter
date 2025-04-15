@@ -7,19 +7,16 @@
             "ESNext"
         ],
         "skipLibCheck": true,
-        /* Various Additional Options */
         "sourceMap": true,
         "inlineSources": true,
         "sourceRoot": "/",
         "allowSyntheticDefaultImports": true,
-        /* Bundler mode */
         "moduleResolution": "bundler",
         "allowImportingTsExtensions": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
         "moduleDetection": "force",
         "noEmit": true,
-        /* Linting */
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
