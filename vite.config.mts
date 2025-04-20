@@ -73,6 +73,7 @@ export default defineConfig(async ({ mode }) => {
         [LIB_NAME]: resolve(BASE_DIR, 'src'),
         '@': resolve(BASE_DIR, 'src'),
       },
+      mainFields: ['module', 'jsnext:main', 'jsnext'],
     },
     define: {
       __VERSION__: JSON.stringify(packageJson.version),
