@@ -1,2 +1,4 @@
 import { configure } from '@nhtio/eslint-config'
-export default configure()
+export default configure({
+  ignores: ['**/docs/api/**/*', '**/tsconfig.json'],
+})

@@ -3,7 +3,23 @@
   "items": [
     {
       "text": "@example/lib",
-      "link": "/api/@example/lib/index"
+      "items": [
+        {
+          "text": "Package Exports",
+          "link": "/api/@example/lib/index"
+        },
+        {
+          "text": "Variables",
+          "items": [
+            {
+              "text": "version",
+              "link": "/api/@example/lib/variables/version"
+            }
+          ],
+          "collapsed": true
+        }
+      ],
+      "collapsed": true
     },
     {
       "text": "@example/lib/test",
