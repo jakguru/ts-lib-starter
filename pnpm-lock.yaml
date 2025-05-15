@@ -15,8 +15,8 @@ importers:
         specifier: ^7.4.1
         version: 7.4.1(@types/node@22.5.4)
       '@nhtio/eslint-config':
-        specifier: ^1.20250414.1
-        version: 1.20250414.1(jiti@1.21.6)(prettier@3.3.3)(typescript@5.5.4)
+        specifier: ^1.20250514.0
+        version: 1.20250514.0(jiti@1.21.6)(prettier@3.3.3)(typescript@5.5.4)
       '@types/cli-color':
         specifier: ^2.0.6
         version: 2.0.6
@@ -621,8 +621,8 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
 
-  '@nhtio/eslint-config@1.20250414.1':
-    resolution: {integrity: sha512-0vHFzCHHvPzQ154Sr7vwPiGRLxaUwPGo/eFTa0Zpnpodp+1r3lsqSktQc6qtFURncdiji+fLucms+08CvEcBVg==}
+  '@nhtio/eslint-config@1.20250514.0':
+    resolution: {integrity: sha512-HuAcWhSiLNwt0JS7LFsi03AuOtV8hbNP9u5FtIecjf6m5EgxrsidV8Uo0fz/ezWODQP1sI+HoRBlT4u/wl2Xpw==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3278,7 +3278,7 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
 
-  '@nhtio/eslint-config@1.20250414.1(jiti@1.21.6)(prettier@3.3.3)(typescript@5.5.4)':
+  '@nhtio/eslint-config@1.20250514.0(jiti@1.21.6)(prettier@3.3.3)(typescript@5.5.4)':
     dependencies:
       '@adonisjs/eslint-config': 2.0.0(eslint@9.24.0(jiti@1.21.6))(prettier@3.3.3)(typescript@5.5.4)
       '@adonisjs/prettier-config': 1.4.4
